@@ -185,16 +185,16 @@ AssemblyItem const* ExpressionClasses::storeItem(AssemblyItem const& _item)
 	return m_spareAssemblyItems.back().get();
 }
 
-string ExpressionClasses::fullDAGToString(ExpressionClasses::Id _id) const
+string ExpressionClasses::fullDAGToString(ExpressionClasses::Id _id, EVMVersion const& _evmVersion) const
 {
 	Expression const& expr = representative(_id);
 	stringstream str;
 	str << dec << expr.id << ":";
 	if (expr.item)
 	{
-		str << *expr.item << "(";
+		append(str, *expr.item, _evmVersion) << "(";
 		for (Id arg: expr.arguments)
-			str << fullDAGToString(arg) << ",";
+			str << fullDAGToString(arg, _evmVersion) << ",";
 		str << ")";
 	}
 	else
@@ -202,7 +202,7 @@ string ExpressionClasses::fullDAGToString(ExpressionClasses::Id _id) const
 	return str.str();
 }
 
-ExpressionClasses::Id ExpressionClasses::tryToSimplify(Expression const& _expr)
+ExpressionClasses::Id ExpressionClasses::tryToSimplify(Expression const& _expr, EVMVersion const& _evmVersion)
 {
 	static Rules rules;
 	assertThrow(rules.isInitialized(), OptimizerException, "Rule list not properly initialized.");
@@ -219,9 +219,11 @@ ExpressionClasses::Id ExpressionClasses::tryToSimplify(Expression const& _expr)
 		// Debug info
 		if (false)
 		{
-			cout << "Simplifying " << *_expr.item << "(";
+			cout << "Simplifying ";
+			append(cout, *_expr.item, _evmVersion);
+			cout << "(";
 			for (Id arg: _expr.arguments)
-				cout << fullDAGToString(arg) << ", ";
+				cout << fullDAGToString(arg, _evmVersion) << ", ";
 			cout << ")" << endl;
 			cout << "with rule " << match->pattern.toString() << endl;
 			cout << "to " << match->action().toString() << endl;

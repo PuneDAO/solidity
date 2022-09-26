@@ -21,13 +21,17 @@
 
 #pragma once
 
-#include <libevmasm/Instruction.h>
-
 #include <optional>
 #include <string>
 
 #include <boost/operators.hpp>
 
+
+namespace solidity::evmasm
+{
+/// Virtual machine bytecode instruction. Forward declared from libevmasm/Instruction.h
+enum class Instruction: uint8_t;
+}
 
 namespace solidity::langutil
 {
@@ -92,7 +96,8 @@ public:
 	bool hasChainID() const { return *this >= istanbul(); }
 	bool hasSelfBalance() const { return *this >= istanbul(); }
 	bool hasBaseFee() const { return *this >= london(); }
-	bool hasPrevRandAO() const { return *this >= paris(); }
+	bool hasPrevRandao() const { return *this >= paris(); }
+	bool hasDifficulty() const { return *this < paris(); }
 
 	bool hasOpcode(evmasm::Instruction _opcode) const;
 
@@ -105,7 +110,7 @@ private:
 
 	EVMVersion(Version _version): m_version(_version) {}
 
-	Version m_version = Version::London;
+	Version m_version = Version::Paris;
 };
 
 }

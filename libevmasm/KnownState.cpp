@@ -33,9 +33,9 @@ using namespace solidity;
 using namespace solidity::evmasm;
 using namespace solidity::langutil;
 
-ostream& KnownState::stream(ostream& _out) const
+ostream& KnownState::stream(ostream& _out, langutil::EVMVersion const& _evmVersion) const
 {
-	auto streamExpressionClass = [this](ostream& _out, Id _id)
+	auto streamExpressionClass = [this, _evmVersion](ostream& _out, Id _id)
 	{
 		auto const& expr = m_expressionClasses->representative(_id);
 		_out << "  " << dec << _id << ": ";
@@ -44,7 +44,7 @@ ostream& KnownState::stream(ostream& _out) const
 		else if (expr.item->type() == UndefinedItem)
 			_out << " unknown " << static_cast<int>(expr.item->data());
 		else
-			_out << *expr.item;
+			append(_out, *expr.item, _evmVersion);
 		if (expr.sequenceNumber)
 			_out << "@" << dec << expr.sequenceNumber;
 		_out << "(";

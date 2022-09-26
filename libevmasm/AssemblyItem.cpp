@@ -69,12 +69,12 @@ pair<size_t, size_t> AssemblyItem::splitForeignPushTag() const
 	return make_pair(subId, tag);
 }
 
-pair<string, string> AssemblyItem::nameAndData() const
+pair<string, string> AssemblyItem::nameAndData(langutil::EVMVersion const& _evmVersion) const
 {
 	switch (type())
 	{
 	case Operation:
-		return {instructionInfo(instruction()).name, m_data != nullptr ? toStringInHex(*m_data) : ""};
+		return {instructionInfo(instruction()).name(_evmVersion), m_data != nullptr ? toStringInHex(*m_data) : ""};
 	case Push:
 		return {"PUSH", toStringInHex(data())};
 	case PushTag:
@@ -243,7 +243,7 @@ string AssemblyItem::getJumpTypeAsString() const
 	}
 }
 
-string AssemblyItem::toAssemblyText(Assembly const& _assembly) const
+string AssemblyItem::toAssemblyText(Assembly const& _assembly, langutil::EVMVersion const& _evmVersion) const
 {
 	string text;
 	switch (type())
@@ -251,7 +251,7 @@ string AssemblyItem::toAssemblyText(Assembly const& _assembly) const
 	case Operation:
 	{
 		assertThrow(isValidInstruction(instruction()), AssemblyException, "Invalid instruction.");
-		text = util::toLower(instructionInfo(instruction()).name);
+		text = util::toLower(instructionInfo(instruction()).name(_evmVersion));
 		break;
 	}
 	case Push:
@@ -323,12 +323,12 @@ string AssemblyItem::toAssemblyText(Assembly const& _assembly) const
 	return text;
 }
 
-ostream& solidity::evmasm::operator<<(ostream& _out, AssemblyItem const& _item)
+ostream& solidity::evmasm::append(ostream& _out, AssemblyItem const& _item, langutil::EVMVersion const& _evmVersion)
 {
 	switch (_item.type())
 	{
 	case Operation:
-		_out << " " << instructionInfo(_item.instruction()).name;
+		_out << " " << instructionInfo(_item.instruction()).name(_evmVersion);
 		if (_item.instruction() == Instruction::JUMP || _item.instruction() == Instruction::JUMPI)
 			_out << "\t" << _item.getJumpTypeAsString();
 		break;

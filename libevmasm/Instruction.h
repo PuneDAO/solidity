@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <liblangutil/EVMVersion.h>
 #include <libevmasm/Exceptions.h>
 #include <libsolutil/Common.h>
 #include <libsolutil/Assertions.h>
@@ -281,14 +282,40 @@ enum class Tier
 };
 
 /// Information structure for a particular instruction.
-struct InstructionInfo
+class InstructionInfo
 {
-	std::string name;	///< The name of the instruction.
+	std::string m_name;///< The name of the instruction.
+public:
 	int additional;		///< Additional items required in memory for this instructions (only for PUSH).
 	int args;			///< Number of items required on the stack for this instruction (and, for the purposes of ret, the number taken from the stack).
 	int ret;			///< Number of items placed (back) on the stack by this instruction, assuming args items were removed.
 	bool sideEffects;	///< false if the only effect on the execution environment (apart from gas usage) is a change to a topmost segment of the stack
 	Tier gasPriceTier;	///< Tier for gas pricing.
+
+    InstructionInfo(
+        std::string _name,
+        int _additional,
+        int _args,
+        int _ret,
+        bool _sideEffects,
+        Tier _gasPriceTier
+    ):
+        m_name(_name),
+        additional(_additional),
+        args(_args),
+        ret(_ret),
+        sideEffects(_sideEffects),
+        gasPriceTier(_gasPriceTier)
+    {}
+
+	///< The name of the instruction after considering the evm version
+	std::string name(langutil::EVMVersion _evmVersion) const
+	{
+        // prevrandao supplanted difficulty in evm version paris
+		if (m_name == "PREVRANDAO" && !_evmVersion.hasPrevRandao())
+			return "DIFFICULTY";
+		return m_name;
+	}
 };
 
 /// Information on all the instructions.

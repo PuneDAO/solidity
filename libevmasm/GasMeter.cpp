@@ -268,7 +268,7 @@ unsigned GasMeter::runGas(Instruction _instruction)
 	case Tier::Ext:     return GasCosts::tier6Gas;
 	default: break;
 	}
-	assertThrow(false, OptimizerException, "Invalid gas tier for instruction " + instructionInfo(_instruction).name);
+	assertThrow(false, OptimizerException, "Invalid gas tier for instruction " + instructionInfo(_instruction).name(langutil::EVMVersion()));
 	return 0;
 }
 

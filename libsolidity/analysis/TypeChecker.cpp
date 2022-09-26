@@ -3300,13 +3300,13 @@ bool TypeChecker::visit(MemberAccess const& _memberAccess)
 					_memberAccess.location(),
 					"\"basefee\" is not supported by the VM version."
 				);
-			else if (memberName == "difficulty" && m_evmVersion.hasPrevRandAO())
+			else if (memberName == "difficulty" && m_evmVersion.hasPrevRandao())
 				m_errorReporter.warning(
 					8417_error,
 					_memberAccess.location(),
 					"\"difficulty\" was renamed and supplanted by \"prevrandao\" in the VM version paris."
 				);
-			else if (memberName == "prevrandao" && !m_evmVersion.hasPrevRandAO())
+			else if (memberName == "prevrandao" && !m_evmVersion.hasPrevRandao())
 				m_errorReporter.warning(
 					9432_error,
 					_memberAccess.location(),

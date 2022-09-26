@@ -49,6 +49,7 @@
 #include <libsolutil/Exceptions.h>
 #include <libevmasm/ExpressionClasses.h>
 #include <libevmasm/SemanticInformation.h>
+#include <liblangutil/EVMVersion.h>
 
 #include <limits>
 #include <utility>
@@ -101,7 +102,7 @@ public:
 	}
 
 	/// Streams debugging information to @a _out.
-	std::ostream& stream(std::ostream& _out) const;
+	std::ostream& stream(std::ostream& _out, langutil::EVMVersion const& _evmVersion) const;
 
 	/// Feeds the item into the system for analysis.
 	/// @returns a possible store operation

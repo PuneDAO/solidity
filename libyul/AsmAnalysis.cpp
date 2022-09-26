@@ -35,6 +35,8 @@
 #include <libsolutil/StringUtils.h>
 #include <libsolutil/Visitor.h>
 
+#include <libevmasm/Instruction.h>
+
 #include <boost/algorithm/string.hpp>
 
 #include <fmt/format.h>
@@ -690,7 +692,7 @@ bool AsmAnalyzer::validateInstructions(evmasm::Instruction _instr, SourceLocatio
 			_location,
 			fmt::format(
 				"The \"{instruction}\" instruction is {kind} VMs (you are currently compiling for \"{version}\").",
-				fmt::arg("instruction", boost::to_lower_copy(instructionInfo(_instr).name)),
+				fmt::arg("instruction", boost::to_lower_copy(instructionInfo(_instr).name(m_evmVersion))),
 				fmt::arg("kind", vmKindMessage),
 				fmt::arg("version", m_evmVersion.name())
 			)

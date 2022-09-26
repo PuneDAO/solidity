@@ -18,6 +18,8 @@
 
 #include <libevmasm/Disassemble.h>
 
+#include <liblangutil/EVMVersion.h>
+
 #include <libsolutil/Common.h>
 #include <libsolutil/CommonIO.h>
 #include <functional>
@@ -57,7 +59,7 @@ void solidity::evmasm::eachInstruction(
 	}
 }
 
-string solidity::evmasm::disassemble(bytes const& _mem, string const& _delimiter)
+string solidity::evmasm::disassemble(bytes const& _mem, langutil::EVMVersion const& _evmVersion, string const& _delimiter)
 {
 	stringstream ret;
 	eachInstruction(_mem, [&](Instruction _instr, u256 const& _data) {
@@ -66,7 +68,7 @@ string solidity::evmasm::disassemble(bytes const& _mem, string const& _delimiter
 		else
 		{
 			InstructionInfo info = instructionInfo(_instr);
-			ret << info.name;
+			ret << info.name(_evmVersion);
 			if (info.additional)
 				ret << " 0x" << std::uppercase << std::hex << _data;
 			ret << _delimiter;

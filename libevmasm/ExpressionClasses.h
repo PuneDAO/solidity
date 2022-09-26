@@ -28,6 +28,8 @@
 
 #include <libsolutil/Common.h>
 
+#include <liblangutil/EVMVersion.h>
+
 #include <memory>
 #include <unordered_set>
 #include <vector>
@@ -113,7 +115,7 @@ public:
 	/// the lifetime of the ExpressionClasses object.
 	AssemblyItem const* storeItem(AssemblyItem const& _item);
 
-	std::string fullDAGToString(Id _id) const;
+	std::string fullDAGToString(Id _id, langutil::EVMVersion const& _evmVersion) const;
 
 private:
 	/// Tries to simplify the given expression.

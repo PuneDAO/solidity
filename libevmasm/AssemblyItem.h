@@ -24,6 +24,7 @@
 
 #include <libevmasm/Instruction.h>
 #include <libevmasm/Exceptions.h>
+#include <liblangutil/EVMVersion.h>
 #include <liblangutil/SourceLocation.h>
 #include <libsolutil/Common.h>
 #include <libsolutil/Numeric.h>
@@ -111,7 +112,7 @@ public:
 	/// @returns a pair, where the first element is the json-assembly
 	/// item name, where second element is the string representation
 	/// of it's data.
-	std::pair<std::string, std::string> nameAndData() const;
+	std::pair<std::string, std::string> nameAndData(langutil::EVMVersion const& _evmVersion) const;
 
 	bytes const& verbatimData() const { assertThrow(m_type == VerbatimBytecode, util::Exception, ""); return std::get<2>(*m_verbatimBytecode); }
 
@@ -179,7 +180,7 @@ public:
 	void setPushedValue(u256 const& _value) const { m_pushedValue = std::make_shared<u256>(_value); }
 	u256 const* pushedValue() const { return m_pushedValue.get(); }
 
-	std::string toAssemblyText(Assembly const& _assembly) const;
+	std::string toAssemblyText(Assembly const& _assembly, langutil::EVMVersion const& _evmVersion) const;
 
 	size_t m_modifierDepth = 0;
 
@@ -211,11 +212,11 @@ inline size_t bytesRequired(AssemblyItems const& _items, size_t _addressLength, 
 	return size;
 }
 
-std::ostream& operator<<(std::ostream& _out, AssemblyItem const& _item);
-inline std::ostream& operator<<(std::ostream& _out, AssemblyItems const& _items)
+std::ostream& append(std::ostream& _out, AssemblyItem const& _item, langutil::EVMVersion const& _evmVersion);
+inline std::ostream& append(std::ostream& _out, AssemblyItems const& _items, langutil::EVMVersion const& _evmVersion)
 {
 	for (AssemblyItem const& item: _items)
-		_out << item;
+		append(_out, item, _evmVersion);
 	return _out;
 }
 

@@ -175,7 +175,7 @@ std::map<std::string, Instruction> const solidity::evmasm::c_instructions =
 	{ "SELFDESTRUCT", Instruction::SELFDESTRUCT }
 };
 
-static std::map<Instruction, InstructionInfo> const c_instructionInfo =
+static std::map<Instruction, InstructionInfo> c_instructionInfo =
 { //												Add, Args, Ret, SideEffects, GasPriceTier
 	{ Instruction::STOP,		{ "STOP",			0, 0, 0, true,  Tier::Zero } },
 	{ Instruction::ADD,			{ "ADD",			0, 2, 1, false, Tier::VeryLow } },
@@ -224,7 +224,6 @@ static std::map<Instruction, InstructionInfo> const c_instructionInfo =
 	{ Instruction::COINBASE,	{ "COINBASE",		0, 0, 1, false, Tier::Base } },
 	{ Instruction::TIMESTAMP,	{ "TIMESTAMP",		0, 0, 1, false, Tier::Base } },
 	{ Instruction::NUMBER,		{ "NUMBER",			0, 0, 1, false, Tier::Base } },
-	{ Instruction::DIFFICULTY,	{ "DIFFICULTY",		0, 0, 1, false, Tier::Base } },
 	{ Instruction::PREVRANDAO,	{ "PREVRANDAO",		0, 0, 1, false, Tier::Base } },
 	{ Instruction::GASLIMIT,	{ "GASLIMIT",		0, 0, 1, false, Tier::Base } },
 	{ Instruction::CHAINID,		{ "CHAINID",		0, 0, 1, false, Tier::Base } },

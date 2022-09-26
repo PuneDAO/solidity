@@ -32,7 +32,7 @@ contract C {
             pop(coinbase())
             pop(timestamp())
             pop(number())
-            pop(difficulty())
+            pop(prevrandao())
             pop(gaslimit())
 
             // These two are disallowed too but the error suppresses other errors.
@@ -42,7 +42,7 @@ contract C {
     }
 }
 // ====
-// EVMVersion: >=london
+// EVMVersion: >=paris
 // ----
 // Warning 5740: (672-1083): Unreachable code.
 // TypeError 2527: (79-87): Function declared as pure, but this expression (potentially) reads from the environment or state and thus requires "view".

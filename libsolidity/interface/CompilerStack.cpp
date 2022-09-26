@@ -223,6 +223,9 @@ void CompilerStack::setEVMVersion(langutil::EVMVersion _version)
 	if (m_stackState >= ParsedAndImported)
 		solThrow(CompilerError, "Must set EVM version before parsing.");
 	m_evmVersion = _version;
+
+    if (m_evmVersion < langutil::EVMVersion::paris())
+        solidity::evmasm::usePreParisOpcodeNames();
 }
 
 void CompilerStack::setModelCheckerSettings(ModelCheckerSettings _settings)

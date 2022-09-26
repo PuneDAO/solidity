@@ -23,6 +23,8 @@
 
 #include <libevmasm/Instruction.h>
 
+#include <liblangutil/EVMVersion.h>
+
 #include <functional>
 #include <string>
 
@@ -33,6 +35,6 @@ namespace solidity::evmasm
 void eachInstruction(bytes const& _mem, std::function<void(Instruction, u256 const&)> const& _onInstruction);
 
 /// Convert from EVM code to simple EVM assembly language.
-std::string disassemble(bytes const& _mem, std::string const& _delimiter = " ");
+std::string disassemble(bytes const& _mem, langutil::EVMVersion const& _evmVersion, std::string const& _delimiter = " ");
 
 }
